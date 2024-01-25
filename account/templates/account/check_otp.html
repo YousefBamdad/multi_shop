@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %} MultiShop - Sign In {% endblock %}
+{% block title %} MultiShop - Validation {% endblock %}
 
 {% block main %}
     <!-- Breadcrumb Start -->
@@ -20,7 +20,7 @@
 
     <!-- Contact Start -->
     <div class="container-fluid">
-        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sign In To Your Account</span></h2>
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Validate Your PhoneNumber</span></h2>
         <div class="row px-xl-5">
             <div class="col-lg-7 mb-5">
                 <div class="contact-form bg-light p-30">
@@ -31,21 +31,14 @@
                             {% for error in form.non_field_errors%}
                                 <p class="help-block text-danger">{{ error }}</p>
                             {% endfor %}
-                            {{ form.username }}
+                            {{ form.code }}
                             <p class="help-block text-danger"></p>
-                            {% for error in form.username.errors %}
-                                <p class="help-block text-danger">{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                        <div class="control-group">
-                            {{ form.password }}
-                            <p class="help-block text-danger"></p>
-                            {% for error in form.password.errors %}
+                            {% for error in form.code.errors %}
                                 <p class="help-block text-danger">{{ error }}</p>
                             {% endfor %}
                         </div>
                         <div>
-                            <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Sign In</button>
+                            <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Send</button>
                         </div>
                     </form>
                 </div>

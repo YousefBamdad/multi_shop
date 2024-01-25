@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, AbstractUser
 from account.managers import UserManager
 
 
@@ -44,3 +44,18 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+
+
+class Otp(models.Model):
+    token = models.CharField(max_length=50, null=True)
+    phone = models.CharField(max_length=11)
+    code = models.SmallIntegerField()
+    expiration_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "اعتبارسنجی"
+        verbose_name_plural = "اعتبارسنجی ها"
+
+    def __str__(self):
+        return self.phone

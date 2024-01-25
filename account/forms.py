@@ -3,6 +3,7 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 from account.models import User
 from django.core import validators
+from account.validators import validate_phone, validate_number
 
 
 class UserCreationForm(forms.ModelForm):
@@ -45,32 +46,26 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["phone", "password", "is_active", "is_admin"]
-
-
-def validate_phone(value):
-    if value[0] != "0":
-        raise forms.ValidationError("Phone Should Be Starts With 0", code="phone_validate")
+        fields = ["phone", "email", "password", "is_active", "is_admin"]
 
 
 class LoginForm(forms.Form):
-    phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your Phone'}),
-                            validators=[validate_phone])
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your Phone Or Email'}))
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Your Password'}))
 
     # slug = forms.SlugField()
     # slug_2 = forms.CharField(validators=[validators.validate_slug])
 
-    def clean_phone(self):
-        phone = self.cleaned_data.get("phone")
-        if len(phone) > 11 or len(phone) < 11:
-            raise ValidationError(
-                "invalid Value: %(value)s",
-                code="invalid",
-                params={"value": phone}
-            )
-        return phone
+    # def clean_phone(self):
+    #     phone = self.cleaned_data.get("phone")
+    #     if len(phone) > 100 or len(phone) < 100:
+    #         raise ValidationError(
+    #             "invalid Value: %(value)s",
+    #             code="invalid",
+    #             params={"value": phone}
+    #         )
+    #     return phone
 
     # def clean(self):
     #     cd = super().clean()
@@ -82,3 +77,20 @@ class LoginForm(forms.Form):
     #             params={"value": phone}
     #         )
     #
+
+
+class RegisterForm(forms.Form):
+    phone = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter A Phone Number'}),
+        validators=[validators.MinLengthValidator(11), validators.MaxLengthValidator(11)])
+
+
+class CheckOtpForm(forms.Form):
+    code = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Code'}),
+                           validators=[validators.MinLengthValidator(4), validators.MaxLengthValidator(4)])
+
+
+class AuthenticationForm(forms.Form):
+    phone = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter A Phone Number'}),
+        validators=[validators.MinLengthValidator(11), validators.MaxLengthValidator(11), validate_number, validate_phone])

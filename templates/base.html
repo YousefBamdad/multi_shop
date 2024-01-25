@@ -44,8 +44,7 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{% url 'account:login' %}"><button  class="dropdown-item" type="button">Sign in</button></a>
-                            <button class="dropdown-item" type="button">Sign up</button>
+                            <a href="{% url 'account:authentication' %}"><button  class="dropdown-item" type="button">Authentication</button></a>
                         </div>
                     </div>
                 </div>
@@ -63,7 +62,7 @@
         </div>
         <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
             <div class="col-lg-4">
-                <a href="" class="text-decoration-none">
+                <a href="{% url 'home:home' %}" class="text-decoration-none">
                     <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
                     <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
                 </a>
@@ -82,7 +81,8 @@
             </div>
             <div class="col-lg-4 col-6 text-right">
                 <p class="m-0">Customer Service</p>
-                <h5 class="m-0">+012 345 6789</h5>
+{#                <h5 class="m-0">+012 345 6789</h5>#}
+                <h5 class="m-0">{{ request.user.phone }}</h5>
             </div>
         </div>
     </div>
