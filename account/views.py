@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
@@ -12,9 +12,14 @@ from account.models import Otp, User
 SMS = ghasedakpack.Ghasedak("187bf878bc4924480fcab88a116fe5db5a1ea14689becd518307e3d088cc48f7")
 
 
-
 def user_login(request):
     return render(request, "account/login.html", {})
+
+
+def user_logout(request):
+
+    logout(request)
+    return redirect("home:home")
 
 
 class UserLogin(View):
@@ -35,7 +40,6 @@ class UserLogin(View):
         else:
             form.add_error("username", "Invalid Data!")
         return render(request, "account/login.html", {'form': form})
-
 
 
 class UserAuthenticationView(View):
@@ -77,4 +81,3 @@ class CheckOtpView(View):
         else:
             form.add_error("code", "Invalid Code!")
         return render(request, "account/check_otp.html", {'form': form})
-
