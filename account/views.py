@@ -23,7 +23,10 @@ def user_logout(request):
 
 
 class UserLogin(View):
+
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect("home:home")
         form = LoginForm()
         return render(request, "account/login.html", {'form': form})
 
@@ -44,6 +47,9 @@ class UserLogin(View):
 
 class UserAuthenticationView(View):
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect("home:home")
+
         form = AuthenticationForm()
         return render(request, "account/authentication.html", {'form': form})
 
@@ -63,7 +69,11 @@ class UserAuthenticationView(View):
 
 
 class CheckOtpView(View):
+
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect("home:home")
+
         form = CheckOtpForm()
         return render(request, "account/check_otp.html", {'form': form})
 
