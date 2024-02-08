@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
-from account.forms import LoginForm, RegisterForm, CheckOtpForm, AuthenticationForm
+from account.forms import LoginForm, RegisterForm, CheckOtpForm, AuthenticationForm, AddressCreationForm
 import ghasedakpack
 from random import randint
 from django.utils.crypto import get_random_string
@@ -13,11 +13,11 @@ SMS = ghasedakpack.Ghasedak("187bf878bc4924480fcab88a116fe5db5a1ea14689becd51830
 
 
 def user_login(request):
+
     return render(request, "account/login.html", {})
 
 
 def user_logout(request):
-
     logout(request)
     return redirect("home:home")
 
@@ -91,3 +91,24 @@ class CheckOtpView(View):
         else:
             form.add_error("code", "Invalid Code!")
         return render(request, "account/check_otp.html", {'form': form})
+
+
+class AddAddressView(View):
+    def post(self, request):
+        form = AddressCreationForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+            address.save()
+            next_page = request.GET.get('next')
+            if next_page:
+                return redirect(next_page)
+
+        print(len(request.user.addresses.all()))
+        if len(request.user.addresses.all()) > 4:
+            form.add_error("user", "You can register a maximum of 5 addresses")
+        return render(request, 'account/add_address.html', {'form': form})
+
+    def get(self, request):
+        form = AddressCreationForm()
+        return render(request, 'account/add_address.html', {'form': form})

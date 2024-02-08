@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from account.models import User, Otp
+from account.models import User, Otp, Address
 from account.forms import UserCreationForm, UserChangeForm
 
 
@@ -39,6 +39,7 @@ class UserAdmin(BaseUserAdmin):
 # Now register the new UserAdmin...
 admin.site.register(User, UserAdmin)
 admin.site.register(Otp)
+admin.site.register(Address)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
 admin.site.unregister(Group)

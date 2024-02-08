@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
-from account.models import User
+from account.models import User, Address
 from django.core import validators
 from account.validators import validate_phone, validate_number
 
@@ -49,8 +49,10 @@ class UserChangeForm(forms.ModelForm):
         fields = ["phone", "email", "password", "is_active", "is_admin"]
 
 
+# User Authentication Start:
 class LoginForm(forms.Form):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your Phone Or Email'}))
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your Phone Or Email'}))
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Your Password'}))
 
@@ -93,4 +95,17 @@ class CheckOtpForm(forms.Form):
 class AuthenticationForm(forms.Form):
     phone = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter A Phone Number'}),
-        validators=[validators.MinLengthValidator(11), validators.MaxLengthValidator(11), validate_number, validate_phone])
+        validators=[validators.MinLengthValidator(11), validators.MaxLengthValidator(11), validate_number,
+                    validate_phone])
+
+
+# User Authentication End
+
+
+class AddressCreationForm(forms.ModelForm):
+    user = forms.IntegerField(required=False)
+    class Meta:
+        model = Address
+        fields = "__all__"
+
+

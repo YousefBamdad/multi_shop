@@ -25,7 +25,6 @@ class User(AbstractBaseUser):
         verbose_name = "کاربر"
         verbose_name_plural = "کاربرها"
 
-
     def __str__(self):
         return self.phone
 
@@ -46,7 +45,6 @@ class User(AbstractBaseUser):
         return self.is_admin
 
 
-
 class Otp(models.Model):
     token = models.CharField(max_length=50, null=True)
     phone = models.CharField(max_length=11)
@@ -59,3 +57,19 @@ class Otp(models.Model):
 
     def __str__(self):
         return self.phone
+
+
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses", verbose_name="کاربر")
+    fullname = models.CharField(max_length=60, verbose_name="نام کامل")
+    email = models.EmailField(null=True, blank=True, verbose_name="ایمیل")
+    phone = models.CharField(max_length=12, verbose_name="شماره تلفن")
+    address = models.CharField(max_length=255, verbose_name="آدرس")
+    postal_code = models.CharField(max_length=30, verbose_name="کد پستی")
+
+    class Meta:
+        verbose_name = "آدرس"
+        verbose_name_plural = "آدرس ها"
+
+    def __str__(self):
+        return self.user.phone

@@ -26,6 +26,16 @@ class Cart:
         result = f"{id}-{size}-{color}"
         return result
 
+    def remove_cart(self):
+        del self.session[CART_SESSION_ID]
+
+    def total(self):
+        cart = self.cart.values()
+        total = sum(int(item['quantity']) * int(item['price']) for item in cart)
+        # for item in cart:
+        #     total += int(item['quantity']) * int(item['price'])
+        return total
+
     def add(self, product, quantity, size, color):
 
         unique = self.unique_id_generator(product.id, size, color)
