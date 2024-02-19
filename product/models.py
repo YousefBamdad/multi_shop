@@ -3,6 +3,18 @@ from django.db import models
 
 # Create your models here.
 
+class Category(models.Model):
+    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE, related_name="subs",
+                               verbose_name="والد(اختیاری)")
+    title = models.CharField(max_length=255, verbose_name="نام")
+    slug = models.SlugField()
+
+    class Meta:
+        verbose_name = "دسته بندی"
+        verbose_name_plural = "دسته بندی ها"
+
+    def __str__(self):
+        return self.title
 
 
 class Size(models.Model):
@@ -28,6 +40,7 @@ class Color(models.Model):
 
 
 class Product(models.Model):
+    category = models.ManyToManyField(Category, blank=True, null=True, verbose_name="دسته بندی", related_name="products")
     title = models.CharField(max_length=30, verbose_name="نام")
     description = models.TextField(verbose_name="توضیحات محصول")
     price = models.IntegerField(verbose_name="قیمت|به تومان")
@@ -45,7 +58,9 @@ class Product(models.Model):
 
 
 class Information(models.Model):
-    product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE, related_name="informations", verbose_name="محصول", help_text="محصولی که میخواهید برایش اطلاعات تکمیلی ایجاد کنید را انتخاب کنید")
+    product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE, related_name="informations",
+                                verbose_name="محصول",
+                                help_text="محصولی که میخواهید برایش اطلاعات تکمیلی ایجاد کنید را انتخاب کنید")
     text = models.TextField(verbose_name="متن")
 
     class Meta:

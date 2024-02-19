@@ -1,0 +1,9 @@
+<ul class="child">
+    {% for subcat in category.subs.all %}
+        <li class="parent"><a href="#">{{ subcat.title }} <span class="expand">»</span></a>
+            {% if category.subs.all %}
+                {% include 'sub_categories_test.html' %}
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

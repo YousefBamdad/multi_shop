@@ -12,7 +12,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+# import sys
 from decouple import config
+
+# sys.setrecursionlimit(1001)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,6 +49,7 @@ INSTALLED_APPS = [
     'product.apps.ProductConfig',
     'cart.apps.CartConfig',
     'widget_tweaks',
+    'django_render_partial',
 ]
 
 MIDDLEWARE = [
@@ -121,7 +125,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+LOGIN_URL = '/account/login'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 

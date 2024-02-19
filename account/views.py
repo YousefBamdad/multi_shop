@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
@@ -14,7 +15,7 @@ SMS = ghasedakpack.Ghasedak("187bf878bc4924480fcab88a116fe5db5a1ea14689becd51830
 
 def user_login(request):
 
-    return render(request, "account/login.html", {})
+    return render(request, "account/login.html", {}) # Unused
 
 
 def user_logout(request):
@@ -37,6 +38,9 @@ class UserLogin(View):
             user = authenticate(username=cd['username'], password=cd['password'])
             if user is not None:
                 login(request, user)
+                next_page = request.GET.get('next')
+                if next_page:
+                    return redirect(next_page)
                 return redirect("home:home")
             else:
                 form.add_error("phone", "Invalid Username or Password")
@@ -93,7 +97,7 @@ class CheckOtpView(View):
         return render(request, "account/check_otp.html", {'form': form})
 
 
-class AddAddressView(View):
+class AddAddressView(LoginRequiredMixin, View):
     def post(self, request):
         form = AddressCreationForm(request.POST)
         if form.is_valid():
