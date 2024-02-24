@@ -14,16 +14,16 @@
                         {% if not category.parent %}
                             {% if category.subs.all %}
                                 <div class="nav-item dropdown dropright">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ category.title }} <i
+                                    <a  class="nav-link dropdown-toggle" data-toggle="dropdown">{{ category.title }} <i
                                             class="fa fa-angle-right float-right mt-1"></i></a>
                                     <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
                                         {% for sub in category.subs.all %}
-                                            <a href="" class="dropdown-item">{{ sub.title }}</a>
+                                            <a href="{% url 'product:category_detail' sub.id %}" class="dropdown-item">{{ sub.title }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
                             {% else %}
-                                <a href="" class="nav-item nav-link">{{ category.title }}</a>
+                                <a href="{% url 'product:category_detail' category.id %}" class="nav-item nav-link">{{ category.title }}</a>
                             {% endif %}
                         {% endif %}
                     {% endfor %}
@@ -42,7 +42,7 @@
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
                         <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="shop.html" class="nav-item nav-link">Shop</a>
+                        <a href="{% url 'product:product_list' %}" class="nav-item nav-link">Shop</a>
                         <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i

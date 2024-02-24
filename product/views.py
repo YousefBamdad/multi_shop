@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.views import View
 from django.views.generic import DetailView, TemplateView, ListView
 from product.models import Product, Category
 
@@ -52,5 +53,14 @@ class ProductListView(ListView):
         context = super(ProductListView, self).get_context_data()
         context['object_list'] = queryset
         return context
+
+
+class CategoryDetailView(View):
+    def get(self, request, pk):
+        category = get_object_or_404(Category, id=pk)
+        products = category.products.all()
+        return render(request, "product/category_detail.html", {"object_list": products})
+
+
 
 
