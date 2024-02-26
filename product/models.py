@@ -40,7 +40,8 @@ class Color(models.Model):
 
 
 class Product(models.Model):
-    category = models.ManyToManyField(Category, blank=True, null=True, verbose_name="دسته بندی", related_name="products")
+    category = models.ManyToManyField(Category, blank=True, null=True, verbose_name="دسته بندی",
+                                      related_name="products")
     title = models.CharField(max_length=30, verbose_name="نام")
     description = models.TextField(verbose_name="توضیحات محصول")
     price = models.IntegerField(verbose_name="قیمت|به تومان")
@@ -48,6 +49,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to="products", verbose_name="تصویر")
     size = models.ManyToManyField(Size, related_name="products", verbose_name="سایز", null=True, blank=True)
     color = models.ManyToManyField(Color, related_name="products", verbose_name="رنگ")
+    created_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         verbose_name = "محصول"
