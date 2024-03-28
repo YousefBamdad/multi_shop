@@ -11,8 +11,10 @@ class Home(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(Home, self).get_context_data()
-        products = Product.objects.all().order_by("-created_at",)
-        context['recent_products'] = products[:4]
+        recent_products = Product.objects.all().order_by("-created_at",)
+        featured_products = Product.objects.filter(discount__gt=0)
+        context['recent_products'] = recent_products[:4]
+        context['featured_products'] = featured_products[:4]
         return context
 
 
