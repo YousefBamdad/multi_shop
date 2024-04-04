@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 # Create your models here.
@@ -71,3 +72,26 @@ class Information(models.Model):
 
     def __str__(self):
         return self.text[:30]
+
+
+class Offer(models.Model):
+    title = models.CharField(max_length=128, verbose_name="عنوان آفر")
+    description = models.TextField(verbose_name="توضیحات در مورد آفر")
+    discount = models.IntegerField(default=0, verbose_name="تخفیف")
+    Image = models.ImageField(null=True, verbose_name="تصویر")
+    start_date = models.DateField(default=timezone.now(), verbose_name="زمان شروع")
+    end_date = models.DateField(verbose_name="زمان پایان")
+    products = models.ManyToManyField(Product, related_name="offers", verbose_name="محصولات")
+    is_active = models.BooleanField(default=False, verbose_name="وضعیت آفر",
+                                    help_text="این گزینه اگر فعال باشد آفر فعال است و در سایت نمایش داده میشود")
+
+    class Meta:
+        verbose_name = "آفر"
+        verbose_name_plural = "آفرها"
+
+    def is_active_func(self):
+        today = timezone.now().date()
+        return self.start_date <= today <= self.end_date
+
+    def __str__(self):
+        return self.title

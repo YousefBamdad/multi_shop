@@ -1,8 +1,12 @@
 from django.contrib import admin
+from django import forms
+
 from product import models
 
 
 # Register your models here.
+
+
 
 class InformationAdmin(admin.StackedInline):
     model = models.Information
@@ -16,6 +20,12 @@ class ProductAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['title', 'slug', 'parent']
     prepopulated_fields = {'slug': ('title', )}
+
+
+@admin.register(models.Offer)
+class OfferAdmin(admin.ModelAdmin):
+    list_display = ['title', 'start_date', 'end_date', 'discount']
+    filter_horizontal = ('products',)
 
 
 # admin.site.register(models.Product)
